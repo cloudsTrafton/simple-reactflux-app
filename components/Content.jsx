@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from './Button.jsx';
+import RemoveButton from './RemoveButton.jsx';
 import List from './List.jsx'
 import AppActions from '../lib/AppActions';
 import AppStore from '../lib/AppStore'
@@ -9,7 +9,8 @@ class Content extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { articles: [], articlesApproved: [], message: '' };
+        this.state = { articles: [], articlesApproved: [], message: '', hungryText: "Hungry?", hungryButtonColor: "red",
+        hungryButtonClicks: 0};
         this.handleClick = this.handleClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onRemove = this.onRemove.bind(this);
@@ -56,13 +57,29 @@ class Content extends React.Component {
          AppStore.removeChangeListener('STORE_REMOVE_ARTICLE', this.onRemove)
     }
 
+    onHungryButtonClicked() {
+        let clicks = this.state.hungryButtonClicks;
+        clicks++;
+        if (clicks % 2 === 0) {
+            this.setState({hungryText: "Grab a Snickers!", hungryButtonColor: "brown"});
+        }
+        else {
+            this.setState({hungryText: "We have vegetables at home. :(", hungryButtonColor: "green"});
+        }
+        this.setState({hungryButtonClicks: clicks});
+    }
+
     render() {
         var simpleContent =
-            <div>
+            <div id='top-div'>
                 {this.props.text}
                 <br />
+                <button id='hungry-button' onClick={() => this.onHungryButtonClicked()}
+                              style={{backgroundColor: this.state.hungryButtonColor}}>
+                    {this.state.hungryText}
+                </button>
                 Enter text : <input type="text" name="simpletext" id="simpletext" />
-                <Button handleClick={this.handleClick} text="SUBMIT" />
+                <RemoveButton handleClick={this.handleClick} text="SUBMIT" />
                 <br />
                 <List articles={this.state.articles} listHeader="Submitted Articles" />
                 {this.state.message}

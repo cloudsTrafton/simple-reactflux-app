@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from './Button.jsx'
+import RemoveButton from './RemoveButton.jsx'
 import AppActions from '../lib/AppActions'
 
 class List extends React.Component {
@@ -10,7 +10,7 @@ class List extends React.Component {
 
     render() {
         var articles = this.props.articles != undefined ? this.props.articles.map((article,i) => {
-            return <li key={i}> Article {i+1}:{article} <Button  handleClick={()=>this.handleClick(i)} text="X"/></li> 
+            return <li key={i} id={"article" + i}> Article {i+1}:{article} <RemoveButton handleClick={()=>this.handleClick(i)} text="X"/></li>
         }) :[];
         
         return (
